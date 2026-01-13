@@ -1,0 +1,48 @@
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #f4f4f4;
+}
+
+header {
+    background: #222;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+nav {
+    background: #ff5a5f;
+    padding: 10px;
+    text-align: center;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 15px;
+    font-weight: bold;
+}
+
+main {
+    padding: 20px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 200px);
+    gap: 20px;
+}
+
+.item {
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.item img {
+    width: 100%;
+    border-radius: 10px;
+}
