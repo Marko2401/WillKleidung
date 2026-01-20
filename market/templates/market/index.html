@@ -2,42 +2,459 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>WillKleidung</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WillKleidung - Dein Second-Hand Marktplatz</title>
+    <style>
+        /* Reset und Basis-Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* Header */
+        header {
+            background: white;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 0;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        header p {
+            color: #666;
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        /* Navigation */
+        nav {
+            background: #fff;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            margin-bottom: 3rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a:hover, nav a.active {
+            color: #667eea;
+            background: #f0f4ff;
+            transform: translateY(-2px);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: #667eea;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        nav a:hover::after, nav a.active::after {
+            width: 80%;
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem 3rem;
+        }
+
+        main h2 {
+            color: white;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Filter Section */
+        .filter-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-section input {
+            flex: 1;
+            min-width: 200px;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .filter-section input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .filter-section select {
+            padding: 0.75rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            background: white;
+            transition: border-color 0.3s ease;
+        }
+
+        .filter-section select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        /* Item Cards */
+        .item {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+        }
+
+        .item-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #667eea;
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            z-index: 1;
+        }
+
+        .item-image {
+            position: relative;
+            overflow: hidden;
+            height: 280px;
+        }
+
+        .item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .item:hover img {
+            transform: scale(1.05);
+        }
+
+        .item-content {
+            padding: 1.5rem;
+        }
+
+        .item h3 {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .item-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .item-price {
+            font-size: 1.6rem;
+            color: #667eea;
+            font-weight: 700;
+        }
+
+        .item-size {
+            background: #f0f4ff;
+            color: #667eea;
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .item-condition {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        /* CTA Button */
+        .cta-section {
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #667eea;
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            background: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+            color: #666;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            nav {
+                flex-direction: column;
+                gap: 0.5rem;
+                padding: 1rem;
+            }
+            
+            nav a {
+                text-align: center;
+            }
+            
+            .filter-section {
+                flex-direction: column;
+            }
+
+            .filter-section input,
+            .filter-section select {
+                width: 100%;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            main {
+                padding: 0 1rem 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 1.5rem 1rem;
+            }
+            
+            header h1 {
+                font-size: 1.5rem;
+            }
+            
+            header p {
+                font-size: 0.9rem;
+            }
+            
+            main h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
 
 <header>
-    <h1>WillKleidung</h1>
-    <p>Dein Second-Hand Marktplatz</p>
+    <h1>🛍️ WillKleidung</h1>
+    <p>Dein Second-Hand Marktplatz für nachhaltige Mode</p>
 </header>
 
 <nav>
-    <a href="#">Start</a>
+    <a href="#" class="active">Start</a>
     <a href="#">Kleidung verkaufen</a>
+    <a href="#">Kategorien</a>
     <a href="#">Mein Profil</a>
 </nav>
 
 <main>
     <h2>Neueste Artikel</h2>
+    
+    <div class="filter-section">
+        <input type="text" placeholder="🔍 Suche nach Artikeln...">
+        <select>
+            <option>Alle Kategorien</option>
+            <option>Jacken</option>
+            <option>Pullover</option>
+            <option>Schuhe</option>
+            <option>Hosen</option>
+        </select>
+        <select>
+            <option>Alle Größen</option>
+            <option>XS</option>
+            <option>S</option>
+            <option>M</option>
+            <option>L</option>
+            <option>XL</option>
+        </select>
+    </div>
+
     <div class="grid">
         <div class="item">
-            <img src="https://picsum.photos/200" />
-            <h3>Jeansjacke</h3>
-            <p>25 €</p>
+            <div class="item-badge">NEU</div>
+            <div class="item-image">
+                <img src="https://picsum.photos/400/400?random=1" alt="Jeansjacke">
+            </div>
+            <div class="item-content">
+                <h3>Vintage Jeansjacke</h3>
+                <p class="item-condition">Zustand: Sehr gut</p>
+                <div class="item-details">
+                    <span class="item-price">25 €</span>
+                    <span class="item-size">Größe M</span>
+                </div>
+            </div>
         </div>
+
         <div class="item">
-            <img src="https://picsum.photos/201" />
-            <h3>Hoodie</h3>
-            <p>18 €</p>
+            <div class="item-image">
+                <img src="https://picsum.photos/400/400?random=2" alt="Hoodie">
+            </div>
+            <div class="item-content">
+                <h3>Oversize Hoodie</h3>
+                <p class="item-condition">Zustand: Wie neu</p>
+                <div class="item-details">
+                    <span class="item-price">18 €</span>
+                    <span class="item-size">Größe L</span>
+                </div>
+            </div>
         </div>
+
         <div class="item">
-            <img src="https://picsum.photos/202" />
-            <h3>Sneaker</h3>
-            <p>40 €</p>
+            <div class="item-badge">BELIEBT</div>
+            <div class="item-image">
+                <img src="https://picsum.photos/400/400?random=3" alt="Sneaker">
+            </div>
+            <div class="item-content">
+                <h3>Retro Sneaker</h3>
+                <p class="item-condition">Zustand: Gut</p>
+                <div class="item-details">
+                    <span class="item-price">40 €</span>
+                    <span class="item-size">Größe 42</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="item-image">
+                <img src="https://picsum.photos/400/400?random=4" alt="Kleid">
+            </div>
+            <div class="item-content">
+                <h3>Sommerkleid</h3>
+                <p class="item-condition">Zustand: Sehr gut</p>
+                <div class="item-details">
+                    <span class="item-price">22 €</span>
+                    <span class="item-size">Größe S</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="item-badge">NEU</div>
+            <div class="item-image">
+                <img src="https://picsum.photos/400/400?random=5" alt="Lederjacke">
+            </div>
+            <div class="item-content">
+                <h3>Lederjacke</h3>
+                <p class="item-condition">Zustand: Wie neu</p>
+                <div class="item-details">
+                    <span class="item-price">65 €</span>
+                    <span class="item-size">Größe M</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="item-image">
+                <img src="https://picsum.photos/400/400?random=6" alt="Jeans">
+            </div>
+            <div class="item-content">
+                <h3>Mom Jeans</h3>
+                <p class="item-condition">Zustand: Gut</p>
+                <div class="item-details">
+                    <span class="item-price">28 €</span>
+                    <span class="item-size">Größe 30</span>
+                </div>
+            </div>
         </div>
     </div>
+
+    <div class="cta-section">
+        <button class="btn-primary">Mehr Artikel laden</button>
+    </div>
 </main>
+
+<footer>
+    <p>© 2026 WillKleidung - Nachhaltige Mode für alle 🌱</p>
+</footer>
 
 </body>
 </html>
