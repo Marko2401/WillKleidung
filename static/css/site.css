@@ -1,0 +1,14 @@
+/* Modern site styles for WillKleidung */
+:root{
+  --brand:#0d6efd;
+  --muted:#6c757d;
+}
+body{font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
+.navbar-brand strong{font-size:1.05rem;color:var(--brand)}
+.card-listing{border-radius:12px;overflow:hidden;border:1px solid #e9ecef}
+.card-listing .price{font-weight:700;color:var(--brand)}
+.listing-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem}
+.hero{background:linear-gradient(90deg, rgba(13,110,253,.06), rgba(13,110,253,.02));padding:2.25rem;border-radius:12px}
+.footer-small{font-size:0.9rem;color:var(--muted)}
+.img-cover{object-fit:cover;width:100%;height:220px}
+@media(min-width:768px){.img-cover{height:260px}}

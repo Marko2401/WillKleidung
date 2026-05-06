@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block title %}Anmelden - WillKleidung{% endblock %}
+
+{% block extra_css %}
+    <style>
+        .auth-container {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f5f5f7 0%, #ffffff 100%);
+        }
+        
+        .auth-card {
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .auth-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 8px;
+            color: var(--dark);
+        }
+        
+        .auth-subtitle {
+            text-align: center;
+            color: var(--gray-600);
+            margin-bottom: 32px;
+            font-size: 0.95rem;
+        }
+        
+        .form-group {
+            margin-bottom: 24px;
+        }
+        
+        .form-group label {
+            font-weight: 500;
+            color: var(--dark);
+            margin-bottom: 8px;
+            display: block;
+            font-size: 0.95rem;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid var(--gray-300);
+            border-radius: 10px;
+            font-size: 0.95rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            font-family: inherit;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+        }
+        
+        .auth-button {
+            width: 100%;
+            padding: 12px 16px;
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 8px;
+        }
+        
+        .auth-button:hover {
+            background-color: #0056D4;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 16px rgba(0, 122, 255, 0.3);
+        }
+        
+        .auth-divider {
+            height: 1px;
+            background-color: var(--gray-200);
+            margin: 32px 0;
+        }
+        
+        .auth-footer {
+            text-align: center;
+            color: var(--gray-600);
+            font-size: 0.9rem;
+        }
+        
+        .auth-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .auth-footer a:hover {
+            color: #0056D4;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <h2 class="auth-title">Anmelden</h2>
+        <p class="auth-subtitle">Willkommen zurück bei WillKleidung</p>
+        
+        <form method="POST">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="id_username">Benutzername oder E-Mail</label>
+                <input type="text" id="id_username" name="username" required placeholder="Geben Sie Ihren Benutzernamen ein">
+            </div>
+            
+            <div class="form-group">
+                <label for="id_password">Passwort</label>
+                <input type="password" id="id_password" name="password" required placeholder="Geben Sie Ihr Passwort ein">
+            </div>
+            
+            <button type="submit" class="auth-button">Anmelden</button>
+        </form>
+        
+        <div class="auth-divider"></div>
+        
+        <p class="auth-footer">
+            Noch kein Konto?<br>
+            <a href="{% url 'register' %}">Jetzt kostenlos registrieren</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

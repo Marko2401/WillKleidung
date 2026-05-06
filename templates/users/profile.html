@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block title %}Benutzerprofil - {{ user.get_full_name|default:user.username }} - WillKleidung{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    {% if profile.profile_picture %}
+                        <img src="{{ profile.profile_picture.url }}" alt="Profilbild" class="rounded-circle mb-3" style="width: 120px; height: 120px; object-fit: cover;">
+                    {% else %}
+                        <div class="bg-secondary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 120px; height: 120px;">
+                            <i class="fas fa-user fa-3x text-white"></i>
+                        </div>
+                    {% endif %}
+                    <h4>{{ user.get_full_name|default:user.username }}</h4>
+                    <p class="text-muted">{{ profile.location|default:"Keine Adresse angegeben" }}</p>
+                    {% if profile.bio %}
+                        <p>{{ profile.bio }}</p>
+                    {% endif %}
+                    <div class="mt-3">
+                        <span class="badge bg-warning text-dark">
+                            <i class="fas fa-star"></i> {{ rating_avg|floatformat:1 }} ({{ review_count }} Bewertungen)
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Aktive Angebote</h5>
+                </div>
+                <div class="card-body">
+                    {% if page_obj %}
+                        <div class="row">
+                            {% for listing in page_obj %}
+                                <div class="col-md-4 mb-3">
+                                    <div class="card h-100">
+                                        {% if listing.images.first %}
+                                            <img src="{{ listing.images.first.image.url }}" class="card-img-top" alt="{{ listing.title }}" style="height: 200px; object-fit: cover;">
+                                        {% else %}
+                                            <div class="bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                                                <i class="fas fa-image fa-3x text-muted"></i>
+                                            </div>
+                                        {% endif %}
+                                        <div class="card-body">
+                                            <h6 class="card-title">{{ listing.title }}</h6>
+                                            <p class="card-text text-primary fw-bold">{{ listing.price }}€</p>
+                                            <a href="{% url 'listing_detail' listing.pk %}" class="btn btn-primary btn-sm">Ansehen</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        
+                        {% if page_obj.has_other_pages %}
+                            <nav aria-label="Seitennavigation">
+                                <ul class="pagination justify-content-center">
+                                    {% if page_obj.has_previous %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Zurück</a>
+                                        </li>
+                                    {% endif %}
+                                    
+                                    <li class="page-item active">
+                                        <span class="page-link">{{ page_obj.number }}</span>
+                                    </li>
+                                    
+                                    {% if page_obj.has_next %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Weiter</a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                        {% endif %}
+                    {% else %}
+                        <p class="text-muted">Keine aktiven Angebote.</p>
+                    {% endif %}
+                </div>
+            </div>
+            
+            {% if reviews %}
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h5>Neueste Bewertungen</h5>
+                    </div>
+                    <div class="card-body">
+                        {% for review in reviews %}
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between">
+                                    <strong>{{ review.reviewer.username }}</strong>
+                                    <span class="text-warning">
+                                        {% for i in "12345"|make_list %}
+                                            <i class="fas fa-star{% if forloop.counter > review.rating %}-o{% endif %}"></i>
+                                        {% endfor %}
+                                    </span>
+                                </div>
+                                <p class="mb-1">{{ review.comment }}</p>
+                                <small class="text-muted">{{ review.created_at|date:"d.m.Y" }}</small>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

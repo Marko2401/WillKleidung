@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Bewertung abgeben - WillKleidung{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-star"></i> 
+                        Bewertung für {{ seller.get_full_name|default:seller.username }}
+                    </h4>
+                </div>
+                
+                <div class="card-body p-4">
+                    <form method="POST">
+                        {% csrf_token %}
+                        
+                        <div class="mb-4">
+                            <label class="form-label">Bewertung *</label>
+                            <div class="d-flex gap-2 mb-2">
+                                {% for value, label in form.rating.field.choices %}
+                                    <label class="form-check">
+                                        <input type="radio" name="rating" value="{{ value }}" {{ form.rating.value|default:'' == value|stringformat:"s"|yesno:"checked,"}}>
+                                        <span class="rating-stars">
+                                            {% for i in "12345" %}
+                                                {% if forloop.counter <= value|add:"0" %}
+                                                    <i class="fas fa-star" style="color: var(--secondary-color); font-size: 1.5rem;"></i>
+                                                {% else %}
+                                                    <i class="far fa-star" style="font-size: 1.5rem;"></i>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </span>
+                                    </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Kommentar (optional)</label>
+                            {{ form.comment }}
+                            {% if form.comment.errors %}<div class="text-danger">{{ form.comment.errors }}</div>{% endif %}
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-check"></i> Bewertung absenden
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

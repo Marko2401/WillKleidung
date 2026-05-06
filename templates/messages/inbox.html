@@ -1,0 +1,21 @@
+﻿{% extends 'base.html' %}
+
+{% block title %}Nachrichten{% endblock %}
+
+{% block content %}
+<h1>Meine Nachrichten</h1>
+{% if message_list %}
+    <ul class="list-group">
+        {% for message in message_list %}
+            <li class="list-group-item">
+                <h5>{{ message.subject }}</h5>
+                <p>Von: {{ message.sender.username }}</p>
+                <p>{{ message.text|truncatechars:100 }}</p>
+                <a href="{% url 'message_detail' message.pk %}" class="btn btn-primary">Ansehen</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Keine Nachrichten.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,232 @@
+{% extends 'base.html' %}
+
+{% block title %}Angebot löschen - WillKleidung{% endblock %}
+
+{% block extra_css %}
+    <style>
+        .delete-container {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f5f5f7 0%, #ffffff 100%);
+            padding: 20px;
+        }
+        
+        .delete-card {
+            background: var(--white);
+            border: 2px solid var(--danger);
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(255, 59, 48, 0.15);
+            overflow: hidden;
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        .delete-header {
+            background: linear-gradient(135deg, var(--danger) 0%, #FF453A 100%);
+            color: var(--white);
+            padding: 32px;
+        }
+        
+        .delete-header h2 {
+            font-weight: 600;
+            font-size: 1.6rem;
+            margin: 0;
+        }
+        
+        .delete-body {
+            padding: 40px;
+        }
+        
+        .warning-banner {
+            background-color: rgba(255, 59, 48, 0.1);
+            border: 1px solid rgba(255, 59, 48, 0.3);
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+        
+        .warning-banner-icon {
+            color: var(--danger);
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+        
+        .warning-banner-content {
+            color: var(--dark);
+        }
+        
+        .warning-banner-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .warning-banner-text {
+            font-size: 0.9rem;
+            color: var(--gray-700);
+        }
+        
+        .delete-info {
+            background-color: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 28px;
+        }
+        
+        .info-title {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+        }
+        
+        .info-details {
+            display: grid;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: var(--gray-700);
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .info-label {
+            font-weight: 500;
+            color: var(--gray-600);
+        }
+        
+        .info-value {
+            color: var(--dark);
+            font-weight: 500;
+        }
+        
+        .button-group {
+            display: grid;
+            gap: 12px;
+        }
+        
+        .delete-button {
+            padding: 14px 24px;
+            background: var(--danger);
+            color: var(--white);
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .delete-button:hover {
+            background: #FF453A;
+            transform: translateY(-1px);
+            box-shadow: 0 12px 24px rgba(255, 59, 48, 0.3);
+        }
+        
+        .cancel-button {
+            padding: 14px 24px;
+            background: var(--white);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            text-align: center;
+        }
+        
+        .cancel-button:hover {
+            background: var(--gray-50);
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="delete-container">
+    <div class="delete-card">
+        <div class="delete-header">
+            <h2><i class="fas fa-trash-alt"></i> Angebot löschen?</h2>
+        </div>
+        
+        <div class="delete-body">
+            <!-- Warning Banner -->
+            <div class="warning-banner">
+                <div class="warning-banner-icon">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+                <div class="warning-banner-content">
+                    <div class="warning-banner-title">Vorsicht!</div>
+                    <div class="warning-banner-text">Diese Aktion kann nicht rückgängig gemacht werden.</div>
+                </div>
+            </div>
+            
+            <!-- Product Info -->
+            <div class="delete-info">
+                <div class="info-title">Sie sind dabei zu löschen:</div>
+                <div class="info-details">
+                    <div class="info-row">
+                        <span class="info-label">Titel:</span>
+                        <span class="info-value">{{ listing.title }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Preis:</span>
+                        <span class="info-value">€ {{ listing.price }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Status:</span>
+                        <span class="info-value">{{ listing.get_status_display }}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Actions -->
+            <form method="POST" class="button-group">
+                {% csrf_token %}
+                <button type="submit" class="delete-button">
+                    <i class="fas fa-trash-alt"></i> Angebot definitiv löschen
+                </button>
+                <a href="{% url 'listing_detail' listing.id %}" class="cancel-button">
+                    Abbrechen
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+                
+                <div class="card-body">
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <strong>Warnung!</strong> Diese Aktion kann nicht rückgängig gemacht werden.
+                    </div>
+                    
+                    <h5>{{ listing.title }}</h5>
+                    <p class="text-muted mb-4">
+                        Preis: € {{ listing.price }} | 
+                        Status: {{ listing.get_status_display }}
+                    </p>
+                    
+                    <form method="POST" class="d-grid gap-2">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-lg">
+                            <i class="fas fa-trash"></i> Definitiv löschen
+                        </button>
+                        <a href="{% url 'listing_detail' listing.id %}" class="btn btn-outline-secondary">
+                            Abbrechen
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

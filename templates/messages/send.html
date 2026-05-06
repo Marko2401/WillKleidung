@@ -1,0 +1,28 @@
+﻿{% extends 'base.html' %}
+
+{% block title %}Nachricht senden{% endblock %}
+
+{% block content %}
+<h1>Nachricht senden</h1>
+<p>An: {{ recipient.username }}</p>
+<p>Betreff: {{ listing.title }}</p>
+<form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="subject" class="form-label">Betreff</label>
+        <input type="text" name="subject" id="subject" class="form-control" value="Interesse an {{ listing.title }}">
+    </div>
+    <div class="mb-3">
+        <label for="text" class="form-label">Nachricht</label>
+        <textarea name="text" id="text" class="form-control" rows="5">Hallo {{ recipient.username }},
+
+ich interessiere mich für dein Angebot "{{ listing.title }}" und würde gerne mehr Details erfahren.
+
+Mit freundlichen Grüßen,
+{{ user.username }}
+</textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Senden</button>
+    <a href="{% url 'listing_detail' listing.id %}" class="btn btn-secondary">Abbrechen</a>
+</form>
+{% endblock %}
